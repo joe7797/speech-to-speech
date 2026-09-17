@@ -14,7 +14,8 @@ if exist .env (
 )
 
 echo [1/2] 正在啟動 Web 前端伺服器 (http://localhost:7860)...
-start "S2S Web UI" cmd /k ".\.venv\Scripts\python.exe -m uvicorn --app-dir demo server:app --port 7860 --host 0.0.0.0"
+set SPEECH_TO_SPEECH_URL=ws://127.0.0.1:8765/v1/realtime
+start "S2S Web UI" cmd /k "set SPEECH_TO_SPEECH_URL=ws://127.0.0.1:8765/v1/realtime && .\.venv\Scripts\python.exe -m uvicorn --app-dir demo server:app --port 7860 --host 0.0.0.0"
 
 echo.
 echo [2/2] 請選擇後端啟動方式：

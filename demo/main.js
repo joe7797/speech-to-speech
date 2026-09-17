@@ -108,7 +108,7 @@ const SNAPSHOT_LADDER = /** @type {[number, number][]} */ ([
 
 function loadSettings() {
   return {
-    directUrl: localStorage.getItem(STORAGE_KEYS.directUrl) || "",
+    directUrl: localStorage.getItem(STORAGE_KEYS.directUrl) || "ws://127.0.0.1:8765/v1/realtime",
     voice: localStorage.getItem(STORAGE_KEYS.voice) || DEFAULT_VOICE,
     instructions: localStorage.getItem(STORAGE_KEYS.instructions) || DEFAULT_INSTRUCTIONS,
     noiseGate: loadGateThreshold(),
@@ -929,7 +929,7 @@ function connectionTarget() {
   if (!allowDirect) {
     return { sessionUrl: "api/session" };
   }
-  const directUrl = buildDirectWsUrl(pinnedUrl || settings.directUrl);
+  const directUrl = buildDirectWsUrl(pinnedUrl || settings.directUrl || "ws://127.0.0.1:8765/v1/realtime");
   if (!directUrl) {
     throw new Error("Enter a speech-to-speech server URL in Settings.");
   }

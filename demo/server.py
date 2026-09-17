@@ -74,7 +74,7 @@ LB_HF_TOKEN = os.environ.get("LB_HF_TOKEN", "").strip()
 # no limiter, no sign-in) and the browser connects to this URL directly. Unlike
 # the LB address it is NOT a secret — /api/config sends it to the client, which
 # shows it read-only in Settings.
-SPEECH_TO_SPEECH_URL = os.environ.get("SPEECH_TO_SPEECH_URL", "").strip()
+SPEECH_TO_SPEECH_URL = os.environ.get("SPEECH_TO_SPEECH_URL", "ws://127.0.0.1:8765/v1/realtime").strip()
 if SPEECH_TO_SPEECH_URL:
     LOAD_BALANCER_URL = ""
 # HF injects SPACE_ID ("owner/space") into every Space runtime; it's absent
