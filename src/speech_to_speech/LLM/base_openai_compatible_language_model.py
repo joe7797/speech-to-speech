@@ -258,7 +258,7 @@ class BaseOpenAICompatibleHandler(BaseHandler[LLMIn, LLMOut], ABC):
         """
         if reasoning_effort:
             return {"reasoning_effort": reasoning_effort}
-        if base_url is None or cls._is_official_openai(base_url):
+        if base_url is None or cls._is_official_openai(base_url) or "googleapis.com" in base_url:
             return None
         if disable_thinking:
             return {"chat_template_kwargs": {"enable_thinking": False}}
