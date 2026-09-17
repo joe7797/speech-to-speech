@@ -1663,7 +1663,14 @@ async function teardown() {
 /** @param {unknown} err */
 async function onFatalError(err) {
   console.error("[main] fatal:", err);
-  const message = err instanceof Error ? err.message : String(err);
+  let message;
+  if (err instanceof Error) {
+    message = err.message;
+  } else if (err instanceof Event || (typeof err === "object" && err !== null && "type" in err)) {
+    message = "連線失敗：後端語音服務 (8765) 尚未啟動";
+  } else {
+    message = String(err);
+  }
   try {
     await teardown();
   } catch (teardownError) {
