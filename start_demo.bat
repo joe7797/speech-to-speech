@@ -30,19 +30,19 @@ if "%choice%"=="1" (
     if "%GEMINI_API_KEY%"=="" (
         set /p GEMINI_API_KEY="請輸入您的 Gemini API Key: "
     )
-    echo 正在啟動語音服務端 (Google Gemini 3.6 Flash)...
-    .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt parakeet-tdt --llm_backend chat-completions --model_name gemini-3.6-flash --responses_api_base_url "https://generativelanguage.googleapis.com/v1beta/openai/" --responses_api_api_key "%GEMINI_API_KEY%" --tts facebookMMS --facebook_mms_device cpu
+    echo 正在啟動語音服務端 (Google Gemini 3.6 Flash + 中英文語音)...
+    .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt faster-whisper --faster_whisper_stt_model_name base --faster_whisper_stt_gen_language auto --llm_backend chat-completions --model_name gemini-3.6-flash --responses_api_base_url "https://generativelanguage.googleapis.com/v1beta/openai/" --responses_api_api_key "%GEMINI_API_KEY%" --tts chatTTS --chat_tts_device auto
 ) else if "%choice%"=="2" (
     set /p apikey="請輸入您的 API Key (sk-...): "
     set /p baseurl="請輸入 Base URL (直接按 Enter 預設為 OpenAI): "
     if "%baseurl%"=="" (
-        .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt parakeet-tdt --llm_backend responses-api --responses_api_api_key "%apikey%" --tts facebookMMS --facebook_mms_device cpu
+        .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt faster-whisper --faster_whisper_stt_model_name base --faster_whisper_stt_gen_language auto --llm_backend responses-api --responses_api_api_key "%apikey%" --tts chatTTS --chat_tts_device auto
     ) else (
-        .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt parakeet-tdt --llm_backend chat-completions --model_name deepseek-chat --responses_api_base_url "%baseurl%" --responses_api_api_key "%apikey%" --tts facebookMMS --facebook_mms_device cpu
+        .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt faster-whisper --faster_whisper_stt_model_name base --faster_whisper_stt_gen_language auto --llm_backend chat-completions --model_name deepseek-chat --responses_api_base_url "%baseurl%" --responses_api_api_key "%apikey%" --tts chatTTS --chat_tts_device auto
     )
 ) else (
     echo 正在啟動純本地輕量模型 (Qwen2.5-0.5B on CPU)...
-    .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt parakeet-tdt --llm_backend transformers --model_name Qwen/Qwen2.5-0.5B-Instruct --tts facebookMMS --facebook_mms_device cpu
+    .\.venv\Scripts\speech-to-speech.exe serve --host 0.0.0.0 --port 8765 --stt faster-whisper --faster_whisper_stt_model_name base --faster_whisper_stt_gen_language auto --llm_backend transformers --model_name Qwen/Qwen2.5-0.5B-Instruct --tts chatTTS --chat_tts_device auto
 )
 
 pause

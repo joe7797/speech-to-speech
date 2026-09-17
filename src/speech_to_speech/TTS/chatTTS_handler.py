@@ -35,9 +35,14 @@ class ChatTTSHandler(BaseHandler[TTSIn, TTSOut]):
         self.should_listen = should_listen
         self.cancel_scope = cancel_scope
         self.speculative_turns = speculative_turns
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+        elif device == "cuda" and not torch.cuda.is_available():
+            logger.info("CUDA not available, falling back to CPU for ChatTTS")
+            device = "cpu"
         self.device = device
         self.model = ChatTTS.Chat()
-        self.model.load(compile=False)  # Doesn't work for me with True
+        self.model.load(source="huggingface", compile=False, device=torch.device(self.device))
         self.chunk_size = chunk_size
         self.stream = stream
         rnd_spk_emb = self.model.sample_random_speaker()
