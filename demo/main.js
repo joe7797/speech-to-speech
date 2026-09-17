@@ -23,7 +23,8 @@ import { ChatView } from "./ui/chat.js";
 import { Account } from "./ui/account.js";
 
 const DEFAULT_VOICE = "Aiden";
-const DEFAULT_INSTRUCTIONS = "You are a friendly voice assistant.";
+const DEFAULT_INSTRUCTIONS =
+  "You are a helpful and friendly voice assistant. Always reply concisely in the language spoken by the user (Chinese or English). Keep answers to 1-2 brief sentences for natural voice conversation.";
 
 const STORAGE_KEYS = {
   // Direct s2s server URL, used only when the deploy has no LOAD_BALANCER_URL
