@@ -199,22 +199,21 @@ class SearchRequest(BaseModel):
 
 
 @app.get("/api/config")
-def config():
+def config(request: Request):
     """Client bootstrap: whether web search is available, whether the deploy runs
     behind a load balancer (so the browser uses the /api/session proxy + limiter),
     whether HF sign-in is available, and whether the user may instead set a direct
     s2s server URL. The LB address itself is intentionally NOT included."""
+    req_host = request.headers.get("host", "").split(":")[0] or "127.0.0.1"
+    s2s_url = SPEECH_TO_SPEECH_URL or f"ws://{req_host}:8765/v1/realtime"
+    if "127.0.0.1" in s2s_url or "localhost" in s2s_url:
+        s2s_url = f"ws://{req_host}:8765/v1/realtime"
     return {
         "search": bool(SERPER_KEY),
         "lb": bool(LOAD_BALANCER_URL),
         "allowDirect": not LOAD_BALANCER_URL,
-        # Deploy-pinned direct s2s URL (empty when unset). Not a secret: the
-        # browser dials it itself, and Settings shows it locked.
-        "s2sUrl": SPEECH_TO_SPEECH_URL,
-        # WebRTC transport availability: the /api/calls proxy only forwards to
-        # the env-pinned URL (never a client-supplied one), so the toggle is
-        # offered exactly when that URL exists.
-        "rtc": bool(SPEECH_TO_SPEECH_URL),
+        "s2sUrl": s2s_url,
+        "rtc": bool(s2s_url),
         "iceServers": RTC_ICE_SERVERS,
         "startupGreeting": STARTUP_GREETING,
         "auth": AUTH_ENABLED,
